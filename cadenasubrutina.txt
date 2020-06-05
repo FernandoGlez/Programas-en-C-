@@ -1,0 +1,79 @@
+cada subrutina es una tarea.
+
+void orden()
+{
+     struct datos *aux[100];
+     struct datos *aux1;
+     int i;
+     for (i=0;i<100;i++)
+         aux[i]=NULL;
+     f=fopen(archivo,"rb");
+     i=0;
+     while(fread(&alumno,sizeof(alumno),1,f)){
+        aux[i]=(struct datos *)malloc(sizeof (struct datos));
+        *aux[i]=alumno;
+        i++;
+      }
+      fclose(f);
+      aux1=(struct datos *)malloc(sizeof (struct datos));
+      for (i=0;i<100;i++)
+      {
+          if(aux[i]==NULL)
+             i=100;
+          else
+          {
+             if((aux[i+1]!=NULL))
+             if((aux[i+1]->matricula<aux[i]->matricula) )
+             {
+                aux1=aux[i];
+                aux[i]=aux[i+1];
+                aux[i+1]=aux1;
+                i=-1;
+             }
+             
+          }
+      }
+      cout<<"se ordenaron los datos"<<endl;
+      f1=fopen(archivo2,"wb");      
+      for(i=0;i<100;i++)
+      {
+         if(aux[i]!=NULL)
+         {
+             alumno=*aux[i];
+            fwrite(&alumno,sizeof(alumno),1,f1);
+         }
+         else
+            i=100;
+      }
+      fclose(f1);
+      remove(archivo);
+      rename(archivo2,archivo);
+}
+void busca()
+{
+     int reg, lim;
+     cout<<"Registro a visualizar: "<<endl;
+     cin>>reg;
+     f=fopen(archivo,"rb");
+     fseek (f,sizeof(alumno),SEEK_END);
+     lim=ftell (f);
+     getchar();
+     if((reg)*sizeof(alumno)>=lim)
+     {
+         cout<<"no hay tantos registros"<<endl;
+         getchar();
+     }
+     else
+     {
+     fseek (f,(reg-1)*sizeof(alumno),SEEK_SET );
+     fread(&alumno,sizeof(alumno),1,f);
+            cout<<"matricula\t"<<alumno.matricula<<endl;
+            cout<<"nombre\t\t"<<alumno.nombre<<endl;
+            cout<<"apellido\t"<<alumno.apellido<<endl;
+            cout<<"carrera\t\t"<<alumno.carrera<<endl;
+            cout<<"edad\t\t"<<alumno.edad<<endl;
+            cout<<"peso\t\t"<<alumno.peso<<endl<<endl;
+            getchar();
+     }
+     fclose(f);
+}

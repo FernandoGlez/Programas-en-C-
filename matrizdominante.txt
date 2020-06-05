@@ -1,0 +1,42 @@
+ printf("Dame el tamano de la matriz: ""\n");
+       scanf("%d", &n);
+ 
+       for(i = 0; i < n; i++)
+       {
+           for(j = 0; j < n; j++)
+            {
+               printf( "Matriz[%d][%d]: ", i, j );
+               scanf( "%d", &mat[i][j] );
+ 
+               if(i==j) {
+               suma=mat[i][j];
+                   }
+              if(mat[i][i]>suma){
+         y==t;
+              }
+             }
+        else  {
+    y==f;
+           }
+  return y;
+} 
+       for(i = 0; i < n; i++)
+       {
+          for(j = 0; j < n; j++)
+               printf("%d ", mat[i][j]);
+               printf("\n");
+       }
+    
+          printf( "Es matriz Dominante.\n");
+          }
+     else
+     {
+          printf( "No es matriz Dominante.\n");
+}
+    printf("desea regresar al menu""\n");
+printf("1.-si""\n");
+printf("2.-no""\n");
+scanf("%d",&x);
+ break; 
+break;
+© 2014 Microsoft Términos Privacidad y cookies Desarrolladores Español

@@ -1,0 +1,31 @@
+tarea #3/2do parcial
+
+diseñar p`rograma
+1)captura de una lista de 5 palabras(utilizar un arreglo de cadenas)
+2)mostrar las 5 cadenas.
+3)inicializar con '*' las 5 cadenas(utilizar strepy)
+4)convertir todas las palabras de la lista a mayusculas.
+5)convertir todas las palabras de la lista a minusculass.
+6)concatenar todas las cadenas de la lista en una cadena y mostrar cadena resultante.
+7)salir.
+
+******utilizar funciones para hacer modulos x cada opocion****
+
+ejemp.
+................................................................................
+
+
+gets(lista[0]);
+
+char lista [5][30]
+
+
+!c!a!s!a!\o!       <-----------cadena 1
+!o!s!o!\0!         <-----------  -    2
+!rio!\0!           <-----------  -    3
+!r!o!j!o!\o!       <-----------  -    4
+!a!z!u!l!\0!       <-----------  -    5
+
+for(x=0;x<=1;x++);
+strepy(lista[x],"****....xx");
+

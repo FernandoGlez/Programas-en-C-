@@ -1,0 +1,1087 @@
+ 
+ package nsIO; 
+public class PruebasDeMatrices {
+    static int tope=0;
+	static int mat[][];
+	static int mat2[][];
+	static int mat3[][];
+	static double matriz[][];
+	static double matrizA[][];
+	static double resultados[];
+	static double vecInicial[];
+	static double x0, x1, xm, x2, xm1, tolerancia=0, error=0;
+    public static void main(String[] args) {
+    	input teclado = new input();
+    	int opc=0, opc2=0, numMat=0;
+    	do{
+    		System.out.println("");
+    		System.out.println(" 1)  Dimensión de matriz e inserción de valores");
+    		System.out.println(" 2)  Mostrar matriz");
+    		System.out.println(" 3)  Tipo de matrices");
+    		//System.out.println(" 4)  Matriz bandeada");
+    		System.out.println(" 5)  Multiplicación de matrices");
+    		System.out.println(" 6)  Matriz ortogonal");
+    		System.out.println(" 7)  Determinante");
+    		System.out.println(" 8)  Cramer");
+    		System.out.println(" 9)  Gauss-Jordan");
+    		System.out.println("10)  Descomposición LU");
+            System.out.println("11)  Método de Thomas");
+            System.out.println("12)  Método de Jacobi");
+            System.out.println("13)  Método de Gauss-Seidel");
+            System.out.println("14)  Método de Bisección");
+            System.out.println("15)  Método de Punto Fijo");
+            System.out.println("16)  Método de Newton Rapson");
+    		System.out.println("17)  Salir");
+    		System.out.println("Elija una opción: ");
+    		opc=teclado.readint();
+    		System.out.println("");
+    		switch(opc){
+    			case 1:
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				mat=new int [tope][tope];
+    				insercion();
+    			break;	
+    			case 2:
+    				ver();
+    			break;
+    			case 3:
+    				do{
+    					System.out.println("1) Matriz nula");
+    					System.out.println("2) Matriz identidad");
+    					System.out.println("3) Matriz diagonal");
+    					System.out.println("4) Transpuesta");
+    					System.out.println("5) Matriz simétrica");
+    					System.out.println("6) Matriz triangular superior");
+    					System.out.println("7) Matriz triangular inferior");
+    					System.out.println("8) Salir");
+    				    System.out.println("Elija una opción: ");
+    				    opc2=teclado.readint();
+    				    switch(opc2){
+    				    	case 1:
+    				    		nula();
+    				    	break;
+    				    	case 2:
+    				    		identidad();
+    				    	break;
+    				    	case 3:
+    				    		diagonal();
+    				    	break;
+    				    	case 4:    				    		
+    				    		transpuesta();
+    				    	break;
+    				    	case 5:
+    				    		simetrica();
+    				    	break;
+    				    	case 6:
+    				    		tsuperior();
+    				    	break;
+    				    	case 7:
+    				    		tinferior();
+    				    	break;
+    				    }
+    				}while(opc2!=8);
+    				opc2=0;
+    				opc=0;
+    			break;
+    			/*case 4:
+    				if(!bandeada())
+    					System.out.println("LA MATRIZ NO ES BANDEADA");
+    				else{
+    					System.out.println("LA MATRIZ ES BANDEADA");
+    					bandaymediab();
+    				}
+    			break;*/
+    			case 5:
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				mat=new int [tope][tope];
+    				mat2=new int [tope][tope];
+    				mat3=new int [tope][tope];
+    				insercionDos();
+    				System.out.println("");
+    				verDos();
+    				producto();
+    				System.out.println("");
+    				ver();
+    				System.out.println("");
+    				identidad();
+    			break;    				
+    			case 6:
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				mat=new int [tope][tope];
+    				mat2=new int [tope][tope];
+    				mat3=new int [tope][tope];
+    				insercionTres();
+    				System.out.println("");
+    				verTres();
+    				transpuestaDos();
+    				producto();
+    				System.out.println("");
+    				ver();
+    				System.out.println("");
+    				identidad();    				
+    			break;
+    			case 7:
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				matrizA=new double[tope][tope];
+    				insercionDet();
+    				System.out.println("");
+    				verFloat();
+    				System.out.println("Determinante: "+determinante(matrizA));
+    			break;
+    			case 8:
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				System.out.println("");
+    				System.out.println("Elementos de la matriz");
+    				matrizA=new double[tope][tope];
+    				insercionCramer();
+    				System.out.println("");
+    				System.out.println("Elementos vector esultado");
+    				resultados=new double[tope];
+    				insercionVec();
+    				System.out.println("");
+    				verCramer();
+    				verVector();
+    				System.out.println("");
+    				double[] res=cramer(matrizA,resultados);
+    				for(int i=0; i<tope; i++)
+    					System.out.println(res[i]);
+    			break;
+    			case 9:
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				matrizA=new double[tope][tope+1];
+    				insercionGauss();
+    				gaussJordan(matrizA);
+    			break;
+    			case 10:
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				System.out.println("");
+    				System.out.println("Elementos de la matriz");
+    				matrizA=new double[tope][tope];
+    				insercionCramer();
+    				System.out.println("");
+    				System.out.println("Elementos vector esultado");
+    				resultados=new double[tope];
+    				insercionVec();
+    				System.out.println("");
+    				descomposicionLU(matrizA,resultados);
+    			break;
+    			case 11:
+    				int b=0;
+    				boolean x;
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				System.out.println("");
+    				System.out.println("Elementos de la matriz");
+    				matrizA=new double[tope][tope];
+    				insercionCramer();
+    				System.out.println("");
+    				x=bandeada(matrizA);
+    				b=bandaymediab(matrizA);
+    				System.out.println("");
+    				if(b==3){
+    					System.out.println("Elementos vector esultado");
+    					resultados=new double[tope];
+    					insercionVec();
+    					System.out.println("");
+    					descomposicionLU(matrizA,resultados);
+    					}
+    				else
+    					System.out.println("No se puede realizar la operación");
+    			break;
+    			case 12:
+    				double tol=0;
+    				boolean p=true;
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				System.out.println("");
+    				System.out.println("Elementos de la matriz");
+    				matrizA=new double[tope][tope];
+    				insercionCramer();
+    				System.out.println("");
+    				p=dominante(matrizA);
+    				if(p==false){
+    					System.out.println("La matriz no es dominante");
+    					break;
+    				}
+    				else{
+    					System.out.println("Elementos vector esultado");
+    					resultados=new double[tope];
+    					insercionVec();
+    					System.out.println("");
+    					System.out.println("Tolerancia: ");
+    					tol=teclado.readdouble();
+    					System.out.println("");
+    					System.out.println("Elementos vector inicial");
+    					vecInicial=new double[tope];
+    					insercionVecInicial();    				
+    					System.out.println("");
+    					jacobi(matrizA,resultados,tope,vecInicial,tol);    					
+    				}    				
+    			 break;
+    			 case 13:
+    			 	double tol2=0;
+    				boolean q=true;
+    				System.out.println("Dimensión matriz cuadrada: ");
+    				tope=teclado.readint();
+    				System.out.println("");
+    				System.out.println("Elementos de la matriz");
+    				matrizA=new double[tope][tope];
+    				insercionCramer();
+    				System.out.println("");
+    				q=dominante(matrizA);
+    				if(q==false){
+    					System.out.println("La matriz no es dominante");
+    					break;
+    				}
+    				else{
+    					System.out.println("Elementos vector esultado");
+    					resultados=new double[tope];
+    					insercionVec();
+    					System.out.println("");
+    					System.out.println("Tolerancia: ");
+    					tol2=teclado.readdouble();
+    					System.out.println("");
+    					System.out.println("Elementos vector inicial");
+    					vecInicial=new double[tope];
+    					insercionVecInicial();    				
+    					System.out.println("");
+    					seidel(matrizA,resultados,tope,vecInicial,tol2);    				
+    				    }    				
+    			 break;
+    			 case 14:
+    			 	System.out.println("Introduzca x1: ");
+    			 	x1=teclado.readdouble();
+    			 	System.out.println("Introduzca x2: ");
+    			 	x2=teclado.readdouble();
+    			 	System.out.println("Introduzca tolerancia: ");
+    			 	tolerancia=teclado.readdouble();
+    			    biseccion(x1,x2,tolerancia);
+    			 break;
+    			 case 15:
+    			 	System.out.println("Introsuzca el valor de X0: ");
+    			 	x0=teclado.readdouble();
+    			 	System.out.println("Introduzca tolerancia: ");
+    			 	tolerancia=teclado.readdouble();
+    			 	System.out.println("");
+    			 	puntoFijo(x0, tolerancia);
+    			 break;
+    			 case 16:
+    			 	System.out.println("Introsuzca el valor de X0: ");
+    			 	x0=teclado.readdouble();
+    			 	System.out.println("Introduzca tolerancia: ");
+    			 	tolerancia=teclado.readdouble();
+    			 	System.out.println("");
+    			 	newton(x0,tolerancia);
+    			 break;
+    			}
+    	}while(opc!=17);
+    }
+  
+    public static void insercion(){
+    	//CAPTURA DE MATRIZ GENERAL
+    	int num=0;
+    	int i=0, j=0;    	
+    	input teclado = new input();
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("Inserte un número: ");
+    			num=teclado.readint();
+    			mat[i][j]=num;
+    		}
+    	}
+    }
+    
+    public static void insercionDos(){
+    	//PARA EL PRODUCTO DE MATRICES
+    	int num=0;
+    	int i=0, j=0, k=0;    	
+    	input teclado = new input();
+    	System.out.println("");
+    	System.out.println("Valores de la matriz A");
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("Inserte un número: ");
+    			num=teclado.readint();
+    			mat2[i][j]=num;
+    		}
+    	}
+    	System.out.println("");
+    	System.out.println("Valores de la matriz B");
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("Inserte un número: ");
+    			num=teclado.readint();
+    			mat3[i][j]=num;
+    		}
+    	}     	    				
+    }
+    
+    public static void insercionTres(){
+    	//PARA LA ORTOGONAL
+    	int num=0;
+    	int i=0, j=0;    	
+    	input teclado = new input();
+    	System.out.println("");
+    	System.out.println("Valores de la matriz");
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("Inserte un número: ");
+    			num=teclado.readint();
+    			mat2[i][j]=num;
+    		}
+    	}
+    }
+    
+    public static void insercionDet(){
+    	//CAPTURA DE MATRIZ PARA DETERMINANTE
+    	int num=0;
+    	int i=0, j=0;    	
+    	input teclado = new input();
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("Inserte un número: ");
+    			num=teclado.readint();
+    			matrizA[i][j]=num;
+    		}
+    	}
+    }
+    
+    public static void insercionCramer(){
+    	//CAPTURA DE MATRIZ PARA CRAMER
+    	float num=0;
+    	int i=0, j=0;    	
+    	input teclado = new input();
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("Inserte un número: ");
+    			num=teclado.readfloat();
+    			matrizA[i][j]=num;
+    		}
+    	}
+    }
+    
+    public static void insercionGauss(){
+    	//CAPTURA DE MATRIZ PARA GAUSS-JORDAN
+    	int num=0;
+    	int i=0, j=0;    	
+    	input teclado = new input();
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<=tope; j++){
+    			System.out.print("Inserte un número: ");
+    			num=teclado.readint();
+    			matrizA[i][j]=num;
+    		}
+    	}
+    }
+    
+    public static void insercionVec(){
+    	//CAPTURA DE UN VECTOR
+    	float num=0;
+    	int i=0;
+    	input teclado = new input();
+    	for(i=0; i<tope; i++){
+    		System.out.print("Inserte un número: ");
+    		num=teclado.readfloat();
+    		resultados[i]=num;
+    	}
+    }
+    
+    public static void insercionVecInicial(){
+    	//CAPTURA DE UN VECTOR
+    	float num=0;
+    	int i=0;
+    	input teclado = new input();
+    	for(i=0; i<tope; i++){
+    		System.out.print("Inserte un número: ");
+    		num=teclado.readfloat();
+    		vecInicial[i]=num;
+    	}
+    }
+    
+    public static void ver(){
+    	//MATRIZ EN GENERAL
+    	int i=0, j=0;    	
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("\t"+mat[i][j]+"\t");
+    			}
+    		System.out.print("\n");
+    		}
+    		System.out.println("");    	
+    }
+    
+    public static void verDos(){
+    	//PRODUCTO DE MATRICES
+    	int i=0, j=0;    	
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("\t"+mat2[i][j]+"\t");
+    			}
+    		System.out.print("\n");
+    		}
+    	System.out.println("");
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("\t"+mat3[i][j]+"\t");
+    			}
+    		System.out.print("\n");
+    		}
+    }
+    
+    public static void verTres(){
+    	//PARA LA ORTOGONAL
+    	int i=0, j=0;    	
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("\t"+mat2[i][j]+"\t");
+    			}
+    		System.out.print("\n");
+    		}
+    		System.out.println("");
+    }
+    
+    public static void verFloat(){
+    	//MATRIZ EN DETERMINANTE
+    	int i=0, j=0;    	
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("\t"+matrizA[i][j]+"\t");
+    			}
+    		System.out.print("\n");
+    		}
+    		System.out.println("");    	
+    }
+    
+    public static void verCramer(){
+    	//MATRIZ CRAMER
+    	int i=0, j=0;    	
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("\t"+matrizA[i][j]+"\t");
+    			}
+    		System.out.print("\n");
+    		}
+    		System.out.println("");    	
+    }
+    
+    public static void verGaus(){
+    	//MATRIZ GAUSS
+    	int i=0, j=0;    	
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<=tope; j++){
+    			System.out.print("\t"+matrizA[i][j]+"\t");
+    			}
+    		System.out.print("\n");
+    		}
+    		System.out.println("");    	
+    }
+    
+   /*public static void verLU(){
+    	//MATRIZ L
+    	int i=0, j=0;    	
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			System.out.print("\t"+L[i][j]+"\t");
+    			}
+    		System.out.print("\n");
+    		}
+    		System.out.println("");    	
+    }*/
+    
+    public static void verVector(){
+    	int i=0;
+    	for(i=0; i<tope; i++){
+    		System.out.print("\t"+resultados[i]+"\t");
+    	}
+    	System.out.print("\n");
+    }
+    
+    public static void nula(){
+    	//VERIFICA QUE SEA MATRIZ NULA
+    	int i=0, j=0, cont=0;
+    	for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			if(mat[i][j]==0)
+    				cont++;    			
+    		    }
+            }
+            if(cont==(tope*tope)){
+            	System.out.println("ES MATRIZ NULA");
+            	System.out.println("");
+            }
+            else{
+            	System.out.println("NO ES MATRIZ NULA");
+            	System.out.println("");
+            }
+            	
+	}
+	
+	public static void identidad(){
+		//VERIFICA QUE SEA MATRIZ IDENTIDAD
+		int i=0, j=0, cont=0, cont2=0;
+		for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			if(i==j && mat[i][j]==1)
+    				cont=cont+mat[i][j];
+    			else
+    				cont2=cont2+mat[i][j];
+    			}
+			}
+			if(cont==tope && cont2==0){
+				System.out.println("ES MATRIZ IDENTIDAD");
+				System.out.println("");
+			}				
+			else{
+				System.out.println("NO ES MATRIZ IDENTIDAD");
+				System.out.println("");
+			}	
+		}
+		
+	public static void diagonal(){
+		//VERIFICA QUE SEA MATRIZ DIAGONAL
+		int i=0, j=0, cont=0, cont2=0;
+		for(i=0; i<tope; i++){
+    		for(j=0; j<tope; j++){
+    			if(i==j && mat[i][j]!=0)
+    				cont++;
+    			else
+    				if(i!=j && mat[i][j]!=0)
+    					cont2++;		
+    			}
+			}
+			if(cont==tope && cont2==0){
+				System.out.println("ES MATRIZ DIAGONAL");
+				System.out.println("");
+			}				
+			else{
+				System.out.println("NO ES MATRIZ DIAGONAL");
+				System.out.println("");
+			}	
+		}
+				
+	public static void transpuesta(){
+		//HACE LA TRANSPUESTA DE LA MATRIZ
+		int i=0, j=0;
+		System.out.println("");
+		for(i=0; i<tope; i++){
+			for(j=0; j<tope; j++){
+				System.out.print("\t"+mat[j][i]+"\t");
+			}
+			System.out.print("\n");
+		}
+		System.out.println("");
+	}
+	
+	public static void transpuestaDos(){
+		//TRANSPUESTA PARA LA ORTOGONAL
+		int i=0, j=0;
+		System.out.println("");
+		for(i=0; i<tope; i++){
+			for(j=0; j<tope; j++){
+				mat3[i][j]=mat2[i][j];
+			}
+		}
+		for(i=0; i<tope; i++){
+			for(j=0; j<tope; j++){
+				System.out.print("\t"+mat3[j][i]+"\t");
+			}
+			System.out.print("\n");
+		}
+		System.out.println("");
+	}
+	
+	public static void simetrica(){
+		//VERIFICA QUE SEA MATRIZ SIMÉTRICA
+		int i=0, j=0, cont=0, cont2=0;
+		for(i=0; i<tope; i++){
+			for(j=0; j<tope; j++){
+				if(mat[i][j]==mat[j][i])
+					cont++;
+				else
+					cont2++;									
+			}
+		}
+		if(cont>0 && cont2==0){
+			System.out.println("ES MATRIZ SIMÉTRICA");
+			System.out.println("");
+		}
+		else{
+			System.out.println("NO ES MATRIZ SIMÉTRICA");
+			System.out.println("");
+		}		
+	}
+	
+	public static void tsuperior(){
+		//VERIFICA QUE SEA MATRIZ TRIANGULAR SUPERIOR
+		int i=0, j=0, cont=0;
+		for(i=0; i<tope; i++){
+			for(j=0; j<tope; j++){
+				if(j>=i && mat[i][j]!=0)
+					cont++;
+				else
+					if(mat[i][j]==0)
+						cont--;
+			}
+		}
+		if(cont==tope){
+			System.out.println("ES MATRIZ TRIANGULAR SUPERIOR");
+			System.out.println("");
+		}
+		else{
+			System.out.println("NO ES MATRIZ TRIANGULAR SUPERIOR");
+			System.out.println("");
+		}
+	}
+	
+	public static void tinferior(){
+		//VERIFICA QUE SEA MATRIZ TRIANGULAR INFERIOR
+		int i=0, j=0, cont=0;
+		for(i=0; i<tope; i++){
+			for(j=0; j<tope; j++){
+				if(j<=i && mat[i][j]!=0)
+					cont++;
+				else
+					if(mat[i][j]==0)
+						cont--;	
+			}
+		}
+		if(cont==tope){
+			System.out.println("ES MATRIZ TRIANGULAR INFERIOR");
+			System.out.println("");
+		}
+		else{
+			System.out.println("NO ES MATRIZ TRIANGULAR INFERIOR");
+			System.out.println("");
+		}
+	}
+	
+	public static boolean bandeada(double x [][]){
+		//ANALIZA SI LA MATRIZ ES BANDEADA O NO
+		int i=0, j=0;
+		boolean banda=true;
+		boolean bandeada=true;
+        if(x[tope-1][0]!=0){
+            return false;
+        	}        
+        else if(x[0][tope-1]!=0){
+            	return false;
+            	} 
+        for(i=0; i<tope-1; i++){
+            for(j=0; j<tope-i; j++){
+                if(x[0][i]!=0){
+                    if(!banda){
+                        return false;
+                    	}
+                    if(x[j][j+i]==0){
+                        return false;
+                    	}
+                    if(x[j+i][j]==0){
+                        return false;
+                    	}
+                	}
+            }
+        }
+        for(i=0; i<tope-1; i++){
+            for(j=0; j<tope-i; j++){
+                if(x[0][i]==0){
+                    banda=false;
+                    if(x[j][j+i]!=0){
+                        return false;
+                    	}
+                    if(x[j+i][j]!=0){
+                        return false;
+                    	}
+                	}
+            }
+        }
+        return bandeada;
+    }
+    
+    public static int bandaymediab(double x [][]){
+    	//REGRESA LA BANDA Y LA MEDIA BANDA
+    	int i=0, j=0, banda=0, media=0, cont=0;
+    	while(i<tope){
+    		if(x[i][j]!=0)
+    			cont++;
+    		i++;
+    	}
+    	media=cont-1;
+    	banda=media+media+1;
+    	System.out.println("La banda completa es de: "+banda);
+    	System.out.println("La media banda es de: "+media);
+    	return banda;
+    }
+    
+	public static void producto(){
+		//REALIZA EL RPODUCTO DE DOS MATRICES
+		int i=0, j=0, k=0;
+		for(i=0; i<tope; i++){
+			for(j=0; j<tope; j++){
+				for(k=0; k<tope; k++){
+					mat[i][j]=mat[i][j]+(mat2[i][k]*mat3[k][j]);
+				}    			
+    		}
+		}
+	}
+    
+    //Determinante
+    public static double determinante (double [][] matrizA){
+		assert matrizA != null;
+		assert matrizA.length>0;
+		assert matrizA.length == matrizA[0].length;		
+		double determinante=0;		
+		int filas=matrizA.length;
+		int columnas=matrizA[0].length;
+		
+		// Si la matriz es 1x1, el determinante es el elemento de la matriz
+		if ((filas==1) && (columnas==1))
+			return matrizA[0][0];
+		
+		int signo=1;
+		for (int columna=0;columna<columnas;columna++){
+			// Obtiene el adjunto de fila=0, columna=columna, pero sin el signo.
+			double[][] submatriz=getSubmatriz(matrizA,filas,columnas,columna);
+			determinante=determinante+signo*matrizA[0][columna]*determinante(submatriz);
+			signo*=-1;
+		}
+		
+		return determinante;
+	}
+	
+	private static double [][] getSubmatriz(double [][] matrizA,int filas,int columnas,int columna){
+		double [][] submatriz = new double [filas-1][columnas-1];
+		int contador=0;
+		for (int j=0;j<columnas;j++){
+			if (j==columna) continue;
+			for (int i=1;i<filas;i++)
+				submatriz[i-1][contador]=matrizA[i][j];
+			contador++;
+		}
+		return submatriz;
+	}
+	
+	
+	//CRAMER
+	public static double[] cramer(double[][] matrizA, double[] resultados) {
+        double respuesta[] = new double[resultados.length];
+        double det=determinante(matrizA);
+        double detTemp;
+        double c[][] = new double[matrizA.length][matrizA.length];
+
+        if (det == 0) {
+            System.out.println("No tiene solucion");
+            return respuesta;
+        }
+        for (int i = 0; i < matrizA.length; i++) {
+            c = cambiarColumna(matrizA, resultados, i);
+            detTemp=determinante(c);
+            respuesta[i] = (double) detTemp / (double) det;
+        }
+        return respuesta;
+    }
+
+
+	private static double[][] cambiarColumna(double a[][], double b[], int pos) {
+        double c[][]=new double[a.length][a.length];
+        for (int i=0; i<c.length; i++) {
+            for (int j=0; j<c.length; j++) {
+                if (j==pos) {
+                    c[i][j]=b[i];
+                } else {
+                    c[i][j]=a[i][j];
+                }
+
+            }
+        }
+        return c;
+    }
+
+    public static void ortogonal(){
+    		System.out.println("LA ES MATRIZ ORTOGONAL");
+    }
+    
+    //GAUSS-JORDAN
+    private static void gaussJordan(double[][] matrizA) {
+        //Matrices.imprimir(matriz);
+        for (int i=0; i<matrizA.length; i++) {
+            normalizarRenglon(i, matrizA);
+            hacerCerosColumna(i, matrizA);
+        }
+        verGaus();
+    }
+
+    private static void normalizarRenglon(int i, double[][] matrizA) {
+        double norm=matrizA[i][i];
+        for (int j=0; j<matrizA[0].length; j++) {
+            matrizA[i][j]=matrizA[i][j]/norm;
+        }
+
+    }
+
+	private static void hacerCerosColumna(int i, double[][] matrizA) {
+        for (int j=0; j<matrizA.length; j++) {
+            if (i!=j) {
+                double cons=matrizA[j][i];
+                for (int k=0; k<matrizA[0].length; k++) {
+                    matrizA[j][k]=matrizA[j][k]-(cons*matrizA[i][k]);
+                }
+            }
+        }
+    }
+
+
+ //LU
+ public static void descomposicionLU(double[][]matrizA, double resultados[]){
+        double[][] L=new double[matrizA.length][matrizA.length];
+        for(int i=0; i<L.length; i++){
+            for(int j=0; j<L.length; j++){
+                if(i==j){
+                    L[i][j]=1;
+                	}
+            }
+        }
+        double[][]U=new double[matrizA.length][matrizA.length];
+        for(int i=0; i<U.length; i++){
+            for(int j=0; j<U.length; j++){
+                if(i > j){//LOWER
+                    double cont=matrizA[i][j];
+                    for(int k=0; k<matrizA.length; k++){
+                        if(k==j) {
+                            continue;
+                        } else{
+                            double mult=L[i][k]*U[k][j];
+                            cont-=mult;
+                        }
+                    }
+                    L[i][j]=cont/U[j][j];
+                } else{
+                    double cont=matrizA[i][j];
+                    for(int k=0; k<matrizA.length; k++){
+                        if (k==i){
+                            continue;
+                        } else{
+                            double mult=L[i][k]*U[k][j];
+                            cont-=mult;
+                        }
+                    }
+                    U[i][j]=cont/L[i][i];
+                }
+            }
+        }
+        System.out.println("***   UPPER   ****");
+        for(int i=0; i<U.length; i++){
+        	for(int j=0; j<U.length; j++){
+        		System.out.print(U[i][j]+"\t\t");
+        	}
+        	System.out.println("");
+        }
+  
+        System.out.println("***   LOWER   ****");
+        for(int i=0; i<U.length; i++){
+        	for(int j=0; j<U.length; j++){
+        		System.out.print(L[i][j]+"\t\t");
+        	}
+        	System.out.println("");
+        }
+        System.out.println("***   B[]     ****");
+        double b[]=new double[resultados.length];
+        for(int i=0; i<b.length; i++){
+            double cont=resultados[i];
+            for(int j=0; j<i; j++){
+                if(j==i){
+                    continue;
+                } else{
+                    cont-=b[j]*L[i][j];
+                }
+            }
+            b[i]=cont/L[i][i];
+            //System.out.println("" + b[i]);
+        }
+        //System.out.println("***    Res[]    *****");
+        double res[]=new double[tope];
+        for(int i=matrizA.length-1; i>=0; i--){
+            double cont=b[i];
+            for(int j=matrizA.length-1; j>=i; j--){
+                if(j==i){
+                    continue;
+                } else{
+                    cont-=res[j]*U[i][j];
+                }
+            }
+            res[i]=cont/U[i][i];
+        }
+
+        for(int i=0; i<res.length; i++){
+            System.out.println(""+res[i]);
+        }
+    }
+  
+    
+ public static boolean dominante(double[][]matrizA){
+ 	double suma=0;
+ 	boolean y=false;
+ 	for(int i=0; i<tope; i++){
+ 		suma=0;
+ 		for(int j=0; j<tope; j++){
+ 			if(i!=j){
+ 				suma+=matrizA[i][j];
+ 			}
+ 		}
+ 		if(matrizA[i][i]>suma)
+ 			y=true;
+ 		else{
+ 			y=false;
+ 			break;
+ 		} 		 		
+ 	}
+ 	return y;
+  }
+  
+  
+  public static void jacobi(double[][]matrizA, double[]resultados, int tope, double[]vecInicial, double tol){
+  	double []u = new double [tope];
+  	double error=0, suma=0;
+  	int iter=0;
+  	do{
+  		iter++;
+  		for(int i=0; i<tope; i++){
+  			suma=0;
+  			for(int j=0; j<tope; j++){
+  				if(j != i)
+  					suma+=matrizA[i][j]*vecInicial[j];  				
+  			}
+  			u[i]=(resultados[i]-suma)/matrizA[i][i];
+  			error=u[i]-vecInicial[i];
+  		}
+  		for(int k=0; k<tope; k++){
+  			vecInicial[k]=u[k];
+  		}
+  	}while(error>tol);
+  	System.out.println("Iteraciones: "+iter);
+  	for(int i=0; i<tope; i++){
+  		System.out.println("X "+(i+1)+": "+vecInicial[i]);
+  	}
+  }
+  
+  public static void seidel(double[][]matrizA, double[]resultados, int tope, double[]vecInicial, double tol){
+  	double []u = new double [tope];
+  	double error=0, suma=0, xn=0;
+  	int iter=0;
+  	do{
+  		iter++;
+  		for(int i=0; i<tope; i++){
+  			suma=0;
+  			for(int j=0; j<tope; j++){
+  				if(j != i)
+  					suma+=matrizA[i][j]*vecInicial[j];  				
+  			}
+  			xn=(resultados[i]-suma)/matrizA[i][i];
+  			error=xn-vecInicial[i];
+  			vecInicial[i]=xn;
+  		}
+  	}while(error>tol);
+  	System.out.println("Iteraciones: "+iter);
+  	for(int i=0; i<tope; i++){
+  		System.out.println("X "+(i+1)+": "+vecInicial[i]);
+  	}
+  }
+
+  public static void biseccion(double x1, double x2, double tolerancia){
+  	int i=1;
+  	xm1=(x1+x2)/2;
+  	System.out.println(""+i+"\t"+x1+"\t\t"+xm1+"\t\t"+x2+"\t\t"+f_biseccion(x1)+"\t\t"+f_biseccion(xm1)+"\t\t"+f_biseccion(x2)+"\t\t"+error);
+  	do{
+  		if(f_biseccion(xm1)*f_biseccion(x1)>0)
+  			x1=xm1;
+  		else{
+  			if(f_biseccion(xm1)*f_biseccion(x2)>0)
+  				x2=xm1;
+  		}
+  		xm=(x1+x2)/2;
+  		i++;
+  		error=Math.abs(xm-xm1);
+  		System.out.println(""+i+"\t"+x1+"\t\t"+xm+"\t\t"+x2+"\t\t"+f_biseccion(x1)+"\t\t"+f_biseccion(xm)+"\t\t"+f_biseccion(x2)+"\t\t"+error);
+        xm1=xm;	
+  	}while(error>tolerancia);
+  }
+  
+  public static double f_biseccion(double x){
+  	return(Math.pow(x,3)-x-1);
+  }
+  
+  public static void puntoFijo(double x0, double tolerancia){
+  	double xn,xn1=0,xn2=0;
+  	int i;
+  	error=1;
+    i=0;
+    System.out.println(" i         g(x)              |xn-x(n-1)|         |x(n-1)-x(n-2)|");
+    do{
+    	i++;
+    	xn=funPtoFijo(x0);
+    	xn1=xn;
+    	if(i>=3){
+    		if(Math.abs(xn-x0)<xn2){
+    			if(Math.abs(xn-x0)<=0)
+    				System.out.println("Se encontro raiz: "+xn);
+    			}
+    		else{
+    			System.out.println("El programa se estanco, escoja otro valor ");
+    			break;
+    			}
+    		error=Math.abs(Math.abs(xn-x0)-xn2);
+    		System.out.println(" "+i+"    "+xn+"  "+Math.abs(xn-x0)+"  "+xn2);
+    		}
+    	else{
+    		System.out.println(" "+i+"    "+xn);
+    		}
+    	xn2=Math.abs(xn-x0);
+    	x0=xn1;
+    	}while(error>tolerancia);//fin del while
+  }
+  
+  public static double funPtoFijo(double x0){
+  	return(Math.exp(x0*-1));
+  }
+  
+  public static void newton(double x0, double tolerancia){
+  	double xn,xn1=0,xn2=0;
+  	int i;
+  	error=1;
+  	i=0;
+    System.out.println(" i \t\t x0 \t\t f(x) \t\t f'(x) \t\t |xn-xn| ");
+    do{
+    	i++;
+    	if(i<=1){
+    		xn=funNewton(x0);
+    		xn1=funDerNewton(x0);
+    		System.out.println(" "+i+"       "+x0+"    "+xn+"    "+xn1);
+    		xn2=x0;
+    		x0=x0-(xn/xn1);
+    		}
+    	else{
+    		xn=funNewton(x0);
+    		xn1=funDerNewton(x0);
+    		error=Math.abs(x0-xn2);
+    		System.out.println(" "+i+"       "+x0+"    "+xn+"    "+xn1+"     "+error);
+    		xn2=x0;
+    		x0=x0-(xn/xn1);
+    		}    		
+    	}while(error>tolerancia);
+  }
+  
+  public static double funNewton(double x0){
+    	return (2*(Math.pow(x0,3))-11.7*(Math.pow(x0,2))+17.7*x0-5);
+    }
+    
+  public static double funDerNewton(double n){
+    	return (6*(Math.pow(n,2))-23.4*n+17.7 );
+    }
+ 	
+}
